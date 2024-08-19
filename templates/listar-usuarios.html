@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+    <div class="contenedor-chat">
+        <h1>Lista de Usuarios</h1>
+
+        <!-- Formulario de búsqueda -->
+        <form action="{{ url_for('listar_usuarios') }}" method="GET">
+            <input type="text" name="nombre_filtro" placeholder="Filtrar por nombre" value="{{ nombre_filtro }}">
+            <button type="submit">Buscar</button>
+        </form>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if usuarios %}
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario[0] }}</td>
+                        <td>{{ usuario[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron usuarios con ese nombre</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <form action="{{ url_for('home') }}" method="GET">
+            <button id="boton-inicio" type="submit">Volver al Inicio</button>
+        </form>
+    </div>
+</body>
+</html>
