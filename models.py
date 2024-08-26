@@ -2,17 +2,24 @@ import sqlite3
 from config import init_db
 
 class Usuario:
-    def __init__(self):
+
+    nombre = StringField()
+
+    def __init__(self, nombre=None, apellido=None):
+        self.nombre = nombre
+        self.apellido = apellido
         init_db()
 
-    def guardar(self, nombre, apellido):
+
+    def guardar(self):
         conn = sqlite3.connect('usuarios.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO usuarios (nombre, apellido) VALUES (?, ?)', (nombre, apellido))
+        cursor.execute('INSERT INTO usuarios (nombre, apellido) VALUES (?, ?)', (self.nombre, self.apellido))
         conn.commit()
         conn.close()
 
-    def listar(self, nombre_filtro=''):
+    @staticmethod
+    def listar(nombre_filtro=''):
         conn = sqlite3.connect('usuarios.db')
         cursor = conn.cursor()
         if nombre_filtro:

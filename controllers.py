@@ -3,8 +3,6 @@ from models import Usuario
 
 app = Flask(__name__)
 
-usuario_model = Usuario()
-
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -21,23 +19,19 @@ def guardar_usuario():
     apellido = request.form['apellido']
 
     if not es_valido(nombre) or not es_valido(apellido):
-        return redirect(url_for('alta_usuario'))  # Redirigir si los datos no son válidos
+        return redirect(url_for('alta_usuario'))
 
-    usuario_model.guardar(nombre,apellido)
-
+    usuario = Usuario(nombre=nombre, apellido=apellido)
+    usuario.guardar()
     return redirect(url_for('home'))
 
+# Ruta para listar usuarios
 @app.route('/listar-usuarios', methods=['GET'])
 def listar_usuarios():
     nombre_filtro = request.args.get('nombre_filtro', '')
-
-    usuarios = usuario_model.listar(nombre_filtro)
-
+    usuarios = Usuario.listar(nombre_filtro)
     return render_template('listar-usuarios.html', usuarios=usuarios, nombre_filtro=nombre_filtro)
 
 def es_valido(texto):
     # Validación básica: no debe contener números ni caracteres especiales
     return texto.isalpha() or ' ' in texto
-
-if __name__ == '__main__':
-    app.run(debug=True)
