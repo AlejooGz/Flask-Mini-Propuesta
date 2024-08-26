@@ -3,8 +3,6 @@ from config import init_db
 
 class Usuario:
 
-    nombre = StringField()
-
     def __init__(self, nombre=None, apellido=None):
         self.nombre = nombre
         self.apellido = apellido
